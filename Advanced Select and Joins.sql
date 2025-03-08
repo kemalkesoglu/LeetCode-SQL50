@@ -1,4 +1,4 @@
---The Number of Employees Which Report to Each Employee--
+--The Number of Employees Which Report to Each Employee
 SELECT 
     E1.employee_id, 
     E1.name, 
@@ -10,7 +10,7 @@ WHERE E2.reports_to IS NOT NULL
 GROUP BY E1.employee_id, E1.name, E2.reports_to
 ORDER BY E1.employee_id
 
---Primary Department for Each Employee--
+--Primary Department for Each Employee
 SELECT employee_id,department_id FROM Employee
 WHERE primary_flag='Y' OR employee_id IN
 (
@@ -19,9 +19,21 @@ WHERE primary_flag='Y' OR employee_id IN
     HAVING COUNT(department_id)=1
 )
 
---Triangle Judgement--
+--Triangle Judgement
 SELECT x,y,z,
 CASE WHEN x+y>z AND x+z>y AND y+z>x THEN 'Yes'
 ELSE 'No' END AS triangle
 FROM Triangle
 
+--Consecutive Numbers
+WITH CTE AS (
+SELECT num,
+       LEAD(num, 1) OVER (ORDER BY id) AS ONE_NUM,
+       LEAD(num, 2) OVER (ORDER BY id) AS TWO_NUM
+  FROM Logs
+)
+
+SELECT DISTINCT num AS ConsecutiveNums
+  FROM CTE
+  WHERE num = ONE_NUM
+  AND num = TWO_NUM
