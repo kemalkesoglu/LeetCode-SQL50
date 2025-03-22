@@ -1,9 +1,9 @@
---Not Boring Movies--
+--Not Boring Movies
 SELECT*FROM Cinema
 WHERE id%2=1 AND description NOT LIKE '%boring%'
 ORDER BY rating DESC
 
---Average Selling Price--
+--Average Selling Price
 WITH AVP AS(
     SELECT P.product_id, P.price, U.units
     FROM Prices P 
@@ -15,7 +15,7 @@ SELECT product_id, COALESCE(ROUND(CAST(SUM(units * price) AS FLOAT) / SUM(units)
 FROM AVP
 GROUP BY product_id
 
---Project Employees I--
+--Project Employees I
 SELECT 
 P.project_id, ROUND(AVG(E.experience_years*1.0),2) AS average_years
 FROM Project P
@@ -23,7 +23,15 @@ JOIN Employee E
 ON P.employee_id=E.employee_id
 GROUP BY P.project_id
 
---Monthly Transactions I--
+--Percentage of Users Attended a Contest
+SELECT
+contest_id,
+ROUND(COUNT(user_id)*100.0/(SELECT COUNT(DISTINCT user_id) FROM Users), 2) AS percentage
+FROM Register
+GROUP BY contest_id
+ORDER BY percentage DESC,contest_id
+
+--Monthly Transactions I
 SELECT 
      FORMAT(trans_date, 'yyyy-MM') AS month,
      country,
