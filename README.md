@@ -1,1 +1,1 @@
-# sql50
+# LeetCode-SQL50 SOLUTIONS
